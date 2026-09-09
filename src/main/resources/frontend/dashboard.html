@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Campusly - Student Dashboard</title>
+
+    <link rel="stylesheet"
+          href="/css/dashboard.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            🎓 Campusly
+        </div>
+
+        <div class="nav-right">
+
+            <span id="studentName">
+                Student
+            </span>
+
+            <span class="role-badge">
+                STUDENT
+            </span>
+
+            <button onclick="logout()"
+                    class="logout-btn">
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN DASHBOARD -->
+    <main class="container">
+
+        <!-- WELCOME -->
+        <section class="welcome-section">
+
+            <p class="welcome-small">
+                WELCOME BACK 👋
+            </p>
+
+            <h1>
+                Your Campus,
+                <span>Connected.</span>
+            </h1>
+
+            <p class="welcome-text">
+                Everything you need for your college life,
+                all in one place.
+            </p>
+
+        </section>
+
+
+        <!-- STUDENT SERVICES -->
+        <section>
+
+            <h2>
+                Student Services
+            </h2>
+
+            <p class="section-description">
+                Explore everything Campusly has to offer.
+            </p>
+
+
+            <div class="modules-grid">
+
+
+                <!-- BUY BOOKS -->
+                <div class="module-card"
+                     onclick="openModule('Buy Books')">
+
+                    <div class="module-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        Buy Books
+                    </h3>
+
+                    <p>
+                        Buy and sell academic books.
+                    </p>
+
+                    <button>
+                        Explore
+                    </button>
+
+                </div>
+
+
+                <!-- CANTEEN -->
+                <div class="module-card"
+                     onclick="openModule('Canteen Food')">
+
+                    <div class="module-icon">
+                        🍔
+                    </div>
+
+                    <h3>
+                        Canteen Food
+                    </h3>
+
+                    <p>
+                        Explore campus food and order meals.
+                    </p>
+
+                    <button>
+                        Explore
+                    </button>
+
+                </div>
+
+
+                <!-- INTERNSHIPS -->
+                <div class="module-card"
+                     onclick="openModule('Internships')">
+
+                    <div class="module-icon">
+                        💼
+                    </div>
+
+                    <h3>
+                        Internships
+                    </h3>
+
+                    <p>
+                        Find internship opportunities.
+                    </p>
+
+                    <button>
+                        Explore
+                    </button>
+
+                </div>
+
+
+                <!-- CLUBS -->
+                <div class="module-card"
+                     onclick="openModule('Clubs & Societies')">
+
+                    <div class="module-icon">
+                        🎭
+                    </div>
+
+                    <h3>
+                        Clubs & Societies
+                    </h3>
+
+                    <p>
+                        Discover and join campus clubs.
+                    </p>
+
+                    <button>
+                        Explore
+                    </button>
+
+                </div>
+
+
+                <!-- STUDY GROUPS -->
+                <div class="module-card"
+                     onclick="openModule('Study Groups')">
+
+                    <div class="module-icon">
+                        👥
+                    </div>
+
+                    <h3>
+                        Study Groups
+                    </h3>
+
+                    <p>
+                        Find classmates and study together.
+                    </p>
+
+                    <button>
+                        Explore
+                    </button>
+
+                </div>
+
+
+                <!-- LECTURE NOTES -->
+                <div class="module-card"
+                     onclick="openModule('Lecture Notes')">
+
+                    <div class="module-icon">
+                        📝
+                    </div>
+
+                    <h3>
+                        Lecture Notes
+                    </h3>
+
+                    <p>
+                        Access and share lecture notes.
+                    </p>
+
+                    <button>
+                        Explore
+                    </button>
+
+                </div>
+
+
+                <!-- ROOMMATE -->
+                <div class="module-card"
+                     onclick="openModule('Roommate Finder')">
+
+                    <div class="module-icon">
+                        🏠
+                    </div>
+
+                    <h3>
+                        Roommate Finder
+                    </h3>
+
+                    <p>
+                        Find students looking for roommates.
+                    </p>
+
+                    <button>
+                        Explore
+                    </button>
+
+                </div>
+
+
+                <!-- LOST AND FOUND -->
+                <div class="module-card"
+                     onclick="openModule('Lost & Found')">
+
+                    <div class="module-icon">
+                        🔎
+                    </div>
+
+                    <h3>
+                        Lost & Found
+                    </h3>
+
+                    <p>
+                        Report and find lost belongings.
+                    </p>
+
+                    <button>
+                        Explore
+                    </button>
+
+                </div>
+
+
+                <!-- ATTENDANCE -->
+                <div class="module-card"
+                     onclick="openModule('Student Attendance')">
+
+                    <div class="module-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Student Attendance
+                    </h3>
+
+                    <p>
+                        Check your class attendance.
+                    </p>
+
+                    <button>
+                        View
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="/js/dashboard.js"></script>
+
+</body>
+
+</html>
