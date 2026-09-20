@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Campusly - Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Campusly
+        </div>
+
+        <div class="nav-links">
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="courses.html">
+                Courses
+            </a>
+
+            <a href="event.html">
+                Events
+            </a>
+
+            <button onclick="logout()" class="logout-btn">
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <section class="dashboard">
+
+        <div class="dashboard-header">
+
+            <div>
+
+                <h1>
+                    Welcome to Campusly 👋
+                </h1>
+
+                <p id="userInfo">
+                    Loading user information...
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <h3>
+                    Courses
+                </h3>
+
+                <strong>
+                    8
+                </strong>
+
+                <p>
+                    Enrolled courses
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Completed
+                </h3>
+
+                <strong>
+                    3
+                </strong>
+
+                <p>
+                    Completed courses
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Events
+                </h3>
+
+                <strong>
+                    5
+                </strong>
+
+                <p>
+                    Upcoming events
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Progress
+                </h3>
+
+                <strong>
+                    68%
+                </strong>
+
+                <p>
+                    Overall progress
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-section">
+
+            <h2>
+                Campus Services
+            </h2>
+
+
+            <div class="feature-container campus-modules">
+
+
+                <!-- My Courses -->
+
+                <a href="courses.html" class="feature-card">
+
+                    <div class="feature-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        My Courses
+                    </h3>
+
+                    <p>
+                        View your enrolled courses.
+                    </p>
+
+                </a>
+
+
+
+                <!-- Campus Events -->
+
+                <a href="event.html" class="feature-card module-card">
+
+                    <div class="feature-icon">
+                        📅
+                    </div>
+
+                    <h3>
+                        Campus Events
+                    </h3>
+
+                    <p>
+                        View upcoming campus events.
+                    </p>
+
+                </a>
+
+
+
+                <!-- Buy & Sell Books -->
+
+                <!-- Buy & Sell Books -->
+
+				<a href="books.html" class="feature-card module-card">
+				
+				    <div class="feature-icon">
+				        📚
+				    </div>
+				
+				    <h3>
+				        Buy & Sell Books
+				    </h3>
+				
+				    <p>
+				        Buy and sell used academic books.
+				    </p>
+				
+				</a>
+
+
+                <!-- Student Market -->
+
+                <div class="feature-card module-card"
+                     onclick="openModule('Student Market')">
+
+                    <div class="feature-icon">
+                        🛍️
+                    </div>
+
+                    <h3>
+                        Student Market
+                    </h3>
+
+                    <p>
+                        Explore products and services offered by students.
+                    </p>
+
+                </div>
+
+
+
+                <!-- Canteen Food -->
+
+                <div class="feature-card module-card"
+                     onclick="openModule('Canteen Food')">
+
+                    <div class="feature-icon">
+                        🍔
+                    </div>
+
+                    <h3>
+                        Canteen Food
+                    </h3>
+
+                    <p>
+                        Order food and explore campus canteen options.
+                    </p>
+
+                </div>
+
+
+
+                <!-- Lecture Notes -->
+
+                <div class="feature-card module-card"
+                     onclick="openModule('Lecture Notes')">
+
+                    <div class="feature-icon">
+                        📝
+                    </div>
+
+                    <h3>
+                        Lecture Notes
+                    </h3>
+
+                    <p>
+                        Access and share lecture notes and study materials.
+                    </p>
+
+                </div>
+
+
+
+                <!-- Study Groups -->
+
+                <div class="feature-card module-card"
+                     onclick="openModule('Study Groups')">
+
+                    <div class="feature-icon">
+                        👥
+                    </div>
+
+                    <h3>
+                        Study Groups
+                    </h3>
+
+                    <p>
+                        Find and join study groups with other students.
+                    </p>
+
+                </div>
+
+
+
+                <!-- Clubs -->
+
+                <div class="feature-card module-card"
+                     onclick="openModule('Clubs & Societies')">
+
+                    <div class="feature-icon">
+                        🎭
+                    </div>
+
+                    <h3>
+                        Clubs & Societies
+                    </h3>
+
+                    <p>
+                        Discover and participate in campus clubs.
+                    </p>
+
+                </div>
+
+
+
+                <!-- Roommate -->
+
+                <div class="feature-card module-card"
+                     onclick="openModule('Roommate Finder')">
+
+                    <div class="feature-icon">
+                        🏠
+                    </div>
+
+                    <h3>
+                        Roommate Finder
+                    </h3>
+
+                    <p>
+                        Find suitable roommates around your campus.
+                    </p>
+
+                </div>
+
+
+
+                <!-- Lost & Found -->
+
+                <div class="feature-card module-card"
+                     onclick="openModule('Lost & Found')">
+
+                    <div class="feature-icon">
+                        🔎
+                    </div>
+
+                    <h3>
+                        Lost & Found
+                    </h3>
+
+                    <p>
+                        Report lost items and find items reported by others.
+                    </p>
+
+                </div>
+
+
+
+                <!-- Internships -->
+
+                <div class="feature-card module-card"
+                     onclick="openModule('Internships')">
+
+                    <div class="feature-icon">
+                        💼
+                    </div>
+
+                    <h3>
+                        Internships
+                    </h3>
+
+                    <p>
+                        Explore internship and career opportunities.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>

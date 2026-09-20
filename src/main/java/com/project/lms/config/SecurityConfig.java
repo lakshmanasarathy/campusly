@@ -62,6 +62,9 @@ public class SecurityConfig {
                     "/register.html",
                     "/dashboard.html",
                     "/student-home.html",
+                    "/courses.html",
+                    "/event.html",
+                    "/books.html",
                     "/favicon.ico"
                 ).permitAll()
 

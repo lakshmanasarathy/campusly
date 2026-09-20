@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Campusly - Buy & Sell Books</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+    <style>
+
+        .books-page {
+            padding: 30px;
+        }
+
+        .books-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .books-header h1 {
+            margin: 0;
+        }
+
+        .sell-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fill,
+                minmax(250px, 1fr)
+            );
+
+            gap: 20px;
+        }
+
+        .book-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .book-card h3 {
+            margin-top: 0;
+        }
+
+        .book-price {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .book-condition {
+            margin-bottom: 10px;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+        }
+
+
+        /* Modal */
+
+        .modal {
+            display: none;
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background: rgba(0, 0, 0, 0.5);
+
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .modal-content input,
+        .modal-content textarea,
+        .modal-content select {
+
+            width: 100%;
+
+            padding: 10px;
+
+            margin-bottom: 15px;
+
+            box-sizing: border-box;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Campusly
+        </div>
+
+        <div class="nav-links">
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="courses.html">
+                Courses
+            </a>
+
+            <a href="event.html">
+                Events
+            </a>
+
+            <button
+                onclick="logout()"
+                class="logout-btn">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Books Page -->
+
+    <main class="books-page">
+
+        <div class="books-header">
+
+            <div>
+
+                <h1>
+                    Buy & Sell Books
+                </h1>
+
+                <p>
+                    Buy and sell used academic books.
+                </p>
+
+            </div>
+
+
+            <button
+                class="sell-btn"
+                onclick="openSellModal()">
+
+                + Sell a Book
+
+            </button>
+
+        </div>
+
+
+        <!-- Books -->
+
+        <div
+            id="booksContainer"
+            class="books-grid">
+
+            <p>
+                Loading books...
+            </p>
+
+        </div>
+
+    </main>
+
+
+        <!-- Sell Book Modal -->
+    <div
+        id="sellModal"
+        class="modal">
+
+        <div class="modal-content">
+
+            <h2>
+                Sell a Book
+            </h2>
+
+            <input
+                type="text"
+                id="title"
+                placeholder="Book Title">
+
+            <input
+                type="text"
+                id="author"
+                placeholder="Author">
+
+            <textarea
+                id="description"
+                placeholder="Description">
+            </textarea>
+
+            <input
+                type="number"
+                id="price"
+                placeholder="Price">
+
+            <select id="condition">
+
+                <option value="">
+                    Select Condition
+                </option>
+
+                <option value="NEW">
+                    New
+                </option>
+
+                <option value="LIKE_NEW">
+                    Like New
+                </option>
+
+                <option value="GOOD">
+                    Good
+                </option>
+
+                <option value="USED">
+                    Used
+                </option>
+
+            </select>
+
+            <div class="modal-buttons">
+
+                <button
+                    onclick="sellBook()">
+                    Add Book
+                </button>
+
+                <button
+                    onclick="closeSellModal()">
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="js/books.js"></script>
+
+</body>
+</html>

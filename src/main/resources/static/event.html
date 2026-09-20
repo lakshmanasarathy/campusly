@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Campusly - Events</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Campusly
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="courses.html">
+                Courses
+            </a>
+
+            <a href="events.html">
+                Events
+            </a>
+
+            <button
+                onclick="logout()"
+                class="logout-btn">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Events -->
+
+    <section class="page-section">
+
+        <h1>
+            Campus Events
+        </h1>
+
+
+        <p class="section-description">
+
+            Discover workshops, seminars, hackathons
+            and other campus activities.
+
+        </p>
+
+
+        <div
+            id="eventsContainer"
+            class="event-container">
+
+        </div>
+
+    </section>
+
+
+    <script src="js/events.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campusly - Courses</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">Campusly</div>
+
+    <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="courses.html">Courses</a>
+        <a href="events.html">Events</a>
+        <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+
+</nav>
+
+<section class="page-section">
+
+    <h1>Available Courses</h1>
+
+    <p class="section-description">
+        Explore courses and improve your skills.
+    </p>
+
+    <div class="course-container">
+
+        <div class="course-card">
+            <div class="course-image">☕</div>
+            <div class="course-content">
+                <h2>Java Programming</h2>
+                <p>Learn Java fundamentals, OOP and advanced concepts.</p>
+                <span>Beginner</span>
+                <button class="primary-btn" onclick="enroll('Java Programming')">
+                    Enroll
+                </button>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="course-image">🌐</div>
+            <div class="course-content">
+                <h2>Web Development</h2>
+                <p>Learn HTML, CSS and JavaScript from scratch.</p>
+                <span>Beginner</span>
+                <button class="primary-btn" onclick="enroll('Web Development')">
+                    Enroll
+                </button>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="course-image">⚙️</div>
+            <div class="course-content">
+                <h2>Spring Boot</h2>
+                <p>Build REST APIs and backend applications with Spring Boot.</p>
+                <span>Intermediate</span>
+                <button class="primary-btn" onclick="enroll('Spring Boot')">
+                    Enroll
+                </button>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="course-image">🗄️</div>
+            <div class="course-content">
+                <h2>Database Management</h2>
+                <p>Learn SQL, MySQL and relational database concepts.</p>
+                <span>Intermediate</span>
+                <button class="primary-btn" onclick="enroll('Database Management')">
+                    Enroll
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<script src="js/courses.js"></script>
+
+</body>
+</html>
