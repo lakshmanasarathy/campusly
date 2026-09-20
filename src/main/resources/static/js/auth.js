@@ -318,18 +318,18 @@ if (loginForm) {
                 }
 
 
-            } catch (error) {
+				} catch (error) {
 
-                console.error(error);
+				                console.error(error);
 
 
-                message.innerHTML =
-                    `<p class="error">
+				                message.innerHTML =
+				                    `<p class="error">
 
-                        Cannot connect to
-                        Campusly server.
+				                        Cannot connect to
+				                        Campusly server.
 
-                    </p>`;
+				                    </p>`;
 
             }
 
