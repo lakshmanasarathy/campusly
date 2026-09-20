@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Campusly - My Courses</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css">
+
+</head>
+
+<body>
+
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Campusly
+        </div>
+
+        <div class="nav-links">
+
+            <a href="mentor-dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="mentor-courses.html">
+                My Courses
+            </a>
+
+            <a href="mentor-students.html">
+                Students
+            </a>
+
+            <button
+                onclick="logout()"
+                class="logout-btn">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Courses -->
+
+    <main class="books-page">
+
+        <div class="books-header">
+
+            <div>
+
+                <h1>
+                    My Courses
+                </h1>
+
+                <p>
+                    Create and manage your courses.
+                </p>
+
+            </div>
+
+
+            <button
+                class="sell-btn"
+                onclick="openCourseModal()">
+
+                + Create Course
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="coursesContainer"
+            class="books-grid">
+
+            <p>
+                Loading courses...
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <!-- Create Course Modal -->
+
+    <div
+        id="courseModal"
+        class="modal">
+
+        <div class="modal-content">
+
+            <h2>
+                Create Course
+            </h2>
+
+
+            <input
+                type="text"
+                id="title"
+                placeholder="Course Title">
+
+
+            <textarea
+                id="description"
+                placeholder="Course Description">
+            </textarea>
+
+
+            <div class="modal-buttons">
+
+                <button
+                    onclick="createCourse()">
+
+                    Create
+
+                </button>
+
+
+                <button
+                    onclick="closeCourseModal()">
+
+                    Cancel
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="js/mentor-courses.js"></script>
+
+</body>
+
+</html>

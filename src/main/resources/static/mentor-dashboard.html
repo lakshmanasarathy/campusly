@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Campusly - Mentor Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            Campusly
+        </div>
+
+        <div class="nav-links">
+
+            <a href="mentor-dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="mentor-courses.html">
+                My Courses
+            </a>
+
+            <a href="mentor-students.html">
+                Students
+            </a>
+
+            <button
+                onclick="logout()"
+                class="logout-btn">
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Mentor Dashboard -->
+
+    <section class="dashboard">
+
+        <div class="dashboard-header">
+
+            <div>
+
+                <h1>
+                    Welcome Mentor 👋
+                </h1>
+
+                <p id="mentorInfo">
+                    Loading mentor information...
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Statistics -->
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <h3>
+                    My Courses
+                </h3>
+
+                <strong id="courseCount">
+                    0
+                </strong>
+
+                <p>
+                    Courses created
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Students
+                </h3>
+
+                <strong id="studentCount">
+                    0
+                </strong>
+
+                <p>
+                    Enrolled students
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Assignments
+                </h3>
+
+                <strong>
+                    0
+                </strong>
+
+                <p>
+                    Created assignments
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    Materials
+                </h3>
+
+                <strong>
+                    0
+                </strong>
+
+                <p>
+                    Learning materials
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Mentor Services -->
+
+        <div class="dashboard-section">
+
+            <h2>
+                Mentor Services
+            </h2>
+
+
+            <div class="feature-container">
+
+
+                <!-- Courses -->
+
+                <a
+                    href="mentor-courses.html"
+                    class="feature-card">
+
+                    <div class="feature-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        My Courses
+                    </h3>
+
+                    <p>
+                        Create and manage your courses.
+                    </p>
+
+                </a>
+
+
+                <!-- Students -->
+
+                <a
+                    href="mentor-students.html"
+                    class="feature-card">
+
+                    <div class="feature-icon">
+                        👨‍🎓
+                    </div>
+
+                    <h3>
+                        Students
+                    </h3>
+
+                    <p>
+                        View students enrolled in your courses.
+                    </p>
+
+                </a>
+
+
+                <!-- Materials -->
+
+                <div
+                    class="feature-card"
+                    onclick="comingSoon('Study Materials')">
+
+                    <div class="feature-icon">
+                        📖
+                    </div>
+
+                    <h3>
+                        Study Materials
+                    </h3>
+
+                    <p>
+                        Upload notes and learning materials.
+                    </p>
+
+                </div>
+
+
+                <!-- Assignments -->
+
+                <div
+                    class="feature-card"
+                    onclick="comingSoon('Assignments')">
+
+                    <div class="feature-icon">
+                        📝
+                    </div>
+
+                    <h3>
+                        Assignments
+                    </h3>
+
+                    <p>
+                        Create and manage assignments.
+                    </p>
+
+                </div>
+
+
+                <!-- Profile -->
+
+                <div
+                    class="feature-card"
+                    onclick="comingSoon('Mentor Profile')">
+
+                    <div class="feature-icon">
+                        👤
+                    </div>
+
+                    <h3>
+                        My Profile
+                    </h3>
+
+                    <p>
+                        Manage your mentor profile.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <script src="js/mentor-dashboard.js"></script>
+
+</body>
+
+</html>

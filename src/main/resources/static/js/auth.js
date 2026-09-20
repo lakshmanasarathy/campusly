@@ -4,84 +4,129 @@ const API_URL = "/api";
 // REGISTER
 // ===============================
 
-const registerForm = document.getElementById("registerForm");
+const registerForm =
+    document.getElementById("registerForm");
 
 if (registerForm) {
 
-    registerForm.addEventListener("submit", async function (event) {
+    registerForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const fullName =
-            document.getElementById("fullName").value;
+            const fullName =
+                document.getElementById("fullName").value;
 
-        const email =
-            document.getElementById("email").value;
+            const email =
+                document.getElementById("email").value;
 
-        const password =
-            document.getElementById("password").value;
+            const password =
+                document.getElementById("password").value;
 
-        const role =
-            document.getElementById("role").value;
+            const role =
+                document.getElementById("role").value;
 
-        const collegeId =
-            Number(document.getElementById("collegeId").value);
+            const collegeId =
+                Number(
+                    document.getElementById("collegeId").value
+                );
 
-        const message =
-            document.getElementById("registerMessage");
+            const message =
+                document.getElementById(
+                    "registerMessage"
+                );
 
-        try {
 
-            const response = await fetch(
-                `${API_URL}/auth/register`,
-                {
-                    method: "POST",
+            try {
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                const response =
+                    await fetch(
+                        `${API_URL}/auth/register`,
+                        {
+                            method: "POST",
 
-                    body: JSON.stringify({
-                        fullName: fullName,
-                        email: email,
-                        password: password,
-                        role: role,
-                        collegeId: collegeId
-                    })
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                fullName:
+                                    fullName,
+
+                                email:
+                                    email,
+
+                                password:
+                                    password,
+
+                                role:
+                                    role,
+
+                                collegeId:
+                                    collegeId
+
+                            })
+                        }
+                    );
+
+
+                const data =
+                    await response.text();
+
+
+                if (response.ok) {
+
+                    message.innerHTML =
+                        `<p class="success">
+                            ${data}
+                        </p>`;
+
+
+                    registerForm.reset();
+
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "login.html";
+
+                    }, 1500);
+
+
+                } else {
+
+                    message.innerHTML =
+                        `<p class="error">
+                            ${data}
+                        </p>`;
+
                 }
-            );
 
-            const data = await response.text();
 
-            if (response.ok) {
+            } catch (error) {
 
-                message.innerHTML =
-                    `<p class="success">${data}</p>`;
+                console.error(error);
 
-                registerForm.reset();
-
-                setTimeout(() => {
-                    window.location.href = "login.html";
-                }, 1500);
-
-            } else {
 
                 message.innerHTML =
-                    `<p class="error">${data}</p>`;
+                    `<p class="error">
+
+                        Cannot connect to
+                        Campusly server.
+
+                        Make sure Spring Boot
+                        is running.
+
+                    </p>`;
+
             }
 
-        } catch (error) {
-
-            console.error(error);
-
-            message.innerHTML =
-                `<p class="error">
-                    Cannot connect to Campusly server.
-                    Make sure Spring Boot is running.
-                </p>`;
         }
+    );
 
-    });
 }
 
 
@@ -89,91 +134,206 @@ if (registerForm) {
 // LOGIN
 // ===============================
 
-const loginForm = document.getElementById("loginForm");
+const loginForm =
+    document.getElementById("loginForm");
 
 if (loginForm) {
 
-    loginForm.addEventListener("submit", async function (event) {
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const email =
-            document.getElementById("loginEmail").value;
 
-        const password =
-            document.getElementById("loginPassword").value;
+            const email =
+                document.getElementById(
+                    "loginEmail"
+                ).value;
 
-        const message =
-            document.getElementById("loginMessage");
 
-        try {
+            const password =
+                document.getElementById(
+                    "loginPassword"
+                ).value;
 
-            const response = await fetch(
-                `${API_URL}/auth/login`,
-                {
-                    method: "POST",
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+            const message =
+                document.getElementById(
+                    "loginMessage"
+                );
 
-                    body: JSON.stringify({
-                        email: email,
-                        password: password
-                    })
+
+            try {
+
+                // ===============================
+                // SEND LOGIN REQUEST
+                // ===============================
+
+                const response =
+                    await fetch(
+                        `${API_URL}/auth/login`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                email:
+                                    email,
+
+                                password:
+                                    password
+
+                            })
+                        }
+                    );
+
+
+                // ===============================
+                // GET RESPONSE
+                // ===============================
+
+                const data =
+                    await response.json();
+
+
+                // ===============================
+                // LOGIN SUCCESS
+                // ===============================
+
+                if (response.ok) {
+
+
+                    // ===============================
+                    // STORE JWT
+                    // ===============================
+
+                    localStorage.setItem(
+                        "token",
+                        data.token
+                    );
+
+
+                    // ===============================
+                    // STORE FULL NAME
+                    // ===============================
+
+                    localStorage.setItem(
+                        "fullName",
+                        data.fullName
+                    );
+
+
+                    // ===============================
+                    // STORE ROLE
+                    // ===============================
+
+                    localStorage.setItem(
+                        "role",
+                        data.role
+                    );
+
+
+                    // ===============================
+                    // SUCCESS MESSAGE
+                    // ===============================
+
+                    message.innerHTML =
+                        `<p class="success">
+
+                            Login successful!
+
+                        </p>`;
+
+
+                    // ===============================
+                    // ROLE BASED REDIRECT
+                    // ===============================
+
+                    setTimeout(() => {
+
+
+                        // ===============================
+                        // MENTOR
+                        // ===============================
+
+                        if (
+                            data.role === "MENTOR"
+                        ) {
+
+                            window.location.href =
+                                "mentor-dashboard.html";
+
+                        }
+
+
+                        // ===============================
+                        // STUDENT
+                        // ===============================
+
+                        else if (
+                            data.role === "STUDENT"
+                        ) {
+
+                            window.location.href =
+                                "dashboard.html";
+
+                        }
+                        // ===============================
+                        // UNKNOWN ROLE
+                        // ===============================
+                        else {
+
+                            alert(
+                                "Invalid user role: "
+                                + data.role
+                            );
+
+                        }
+
+                    }, 800);
+
+
                 }
-            );
 
-            const data = await response.json();
 
-            if (response.ok) {
+                // ===============================
+                // LOGIN FAILED
+                // ===============================
 
-                // Store JWT
-                localStorage.setItem(
-                    "token",
-                    data.token
-                );
+                else {
 
-                // Store user information
-                localStorage.setItem(
-                    "fullName",
-                    data.fullName
-                );
+                    message.innerHTML =
+                        `<p class="error">
 
-                localStorage.setItem(
-                    "role",
-                    data.role
-                );
+                            ${data}
 
-                message.innerHTML =
-                    `<p class="success">
-                        Login successful!
-                    </p>`;
+                        </p>`;
 
-                setTimeout(() => {
+                }
 
-                    window.location.href =
-                        "dashboard.html";
 
-                }, 800);
+            } catch (error) {
 
-            } else {
+                console.error(error);
+
 
                 message.innerHTML =
                     `<p class="error">
-                        ${data}
+
+                        Cannot connect to
+                        Campusly server.
+
                     </p>`;
+
             }
 
-        } catch (error) {
-
-            console.error(error);
-
-            message.innerHTML =
-                `<p class="error">
-                    Cannot connect to Campusly server.
-                </p>`;
         }
+    );
 
-    });
 }

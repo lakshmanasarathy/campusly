@@ -61,10 +61,13 @@ public class SecurityConfig {
                     "/login.html",
                     "/register.html",
                     "/dashboard.html",
-                    "/student-home.html",
                     "/courses.html",
                     "/event.html",
                     "/books.html",
+                    "/dashboard.html",
+                    "/mentor-courses.html",
+                    "/mentor-dashboard.html",
+                    "/mentor-students.html",
                     "/favicon.ico"
                 ).permitAll()
 
