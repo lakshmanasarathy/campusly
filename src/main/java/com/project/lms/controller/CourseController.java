@@ -4,7 +4,6 @@ import com.project.lms.entity.Course;
 import com.project.lms.repository.CourseRepository;
 
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,13 +15,24 @@ public class CourseController {
 
     private final CourseRepository courseRepository;
 
-
     public CourseController(
             CourseRepository courseRepository) {
 
-        this.courseRepository =
-                courseRepository;
+        this.courseRepository = courseRepository;
+    }
 
+
+    // ======================================
+    // GET ALL ACTIVE COURSES - STUDENT
+    // ======================================
+
+    @GetMapping
+    public ResponseEntity<List<Course>> getAvailableCourses() {
+
+        List<Course> courses =
+                courseRepository.findByStatus("ACTIVE");
+
+        return ResponseEntity.ok(courses);
     }
 
 
@@ -31,8 +41,7 @@ public class CourseController {
     // ======================================
 
     @GetMapping("/mentor")
-    public ResponseEntity<List<Course>>
-    getMentorCourses() {
+    public ResponseEntity<List<Course>> getMentorCourses() {
 
         /*
          * Temporary mentor ID.
@@ -43,14 +52,10 @@ public class CourseController {
 
         Long mentorId = 1L;
 
-
         List<Course> courses =
-                courseRepository
-                        .findByMentorId(mentorId);
-
+                courseRepository.findByMentorId(mentorId);
 
         return ResponseEntity.ok(courses);
-
     }
 
 
@@ -59,10 +64,8 @@ public class CourseController {
     // ======================================
 
     @PostMapping
-    public ResponseEntity<Course>
-    createCourse(
+    public ResponseEntity<Course> createCourse(
             @RequestBody Course course) {
-
 
         /*
          * Temporary mentor ID.
@@ -73,20 +76,12 @@ public class CourseController {
 
         course.setMentorId(1L);
 
-
-        course.setStatus(
-                "ACTIVE"
-        );
-
+        course.setStatus("ACTIVE");
 
         Course savedCourse =
                 courseRepository.save(course);
 
-
-        return ResponseEntity.ok(
-                savedCourse
-        );
-
+        return ResponseEntity.ok(savedCourse);
     }
 
 
@@ -98,23 +93,17 @@ public class CourseController {
     public ResponseEntity<?> deleteCourse(
             @PathVariable Long id) {
 
-
         if (!courseRepository.existsById(id)) {
 
             return ResponseEntity
                     .notFound()
                     .build();
-
         }
 
-
         courseRepository.deleteById(id);
-
 
         return ResponseEntity.ok(
                 "Course deleted successfully"
         );
-
     }
-
 }

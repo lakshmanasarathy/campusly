@@ -32,10 +32,9 @@ public class EventService {
 
     public Event createEvent(
             Event event,
-            String email) {
+            String email) 
+    {
 
-
-        // Find logged-in user
         User user =
                 userRepository
                         .findByEmail(email)
@@ -45,14 +44,10 @@ public class EventService {
                                 )
                         );
 
-
-        // Store creator ID
         event.setCreatedBy(
                 user.getId()
         );
 
-
-        // Save event
         return eventRepository.save(event);
     }
 

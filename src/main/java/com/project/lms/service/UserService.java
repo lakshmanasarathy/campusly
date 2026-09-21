@@ -18,14 +18,11 @@ public class UserService {
     }
 
 
-    // Get all users
     public List<User> getAllUsers() {
 
         return userRepository.findAll();
     }
 
-
-    // Get user by ID
     public User getUserById(Long id) {
 
         return userRepository.findById(id)
@@ -36,8 +33,6 @@ public class UserService {
                 );
     }
 
-
-    // Get user by email
     public User getUserByEmail(String email) {
 
         return userRepository.findByEmail(email)
@@ -48,8 +43,6 @@ public class UserService {
                 );
     }
 
-
-    // Delete user
     public void deleteUser(Long id) {
 
         if (!userRepository.existsById(id)) {

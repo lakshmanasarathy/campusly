@@ -33,14 +33,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
-    // ===============================
-    // REGISTER
-    // ===============================
-
     public String register(RegisterRequest request) {
-
-        // Check whether email already exists
 
         if (userRepository.existsByEmail(
                 request.getEmail())) {
@@ -49,9 +42,6 @@ public class AuthService {
                     "Email already in use"
             );
         }
-
-
-        // Create new user
 
         User user = new User();
 
@@ -72,21 +62,14 @@ public class AuthService {
                 request.getFullName()
         );
 
-
-        // ===============================
-        // SET ROLE
-        // ===============================
-
         if (request.getRole() != null) {
 
             user.setRole(
                     request.getRole()
             );
 
-        } else {
-
-            // Default role
-
+        } 
+        else {
             user.setRole(
                     Role.STUDENT
             );
@@ -98,18 +81,12 @@ public class AuthService {
         );
 
 
-        // Save user
-
         userRepository.save(user);
 
 
         return "Registered successfully";
     }
 
-
-    // ===============================
-    // LOGIN
-    // ===============================
 
     public LoginResponse login(
             LoginRequest request) {
@@ -125,9 +102,6 @@ public class AuthService {
                                 )
                         );
 
-
-        // Check password
-
         if (!passwordEncoder.matches(
                 request.getPassword(),
                 user.getPasswordHash())) {
@@ -137,16 +111,10 @@ public class AuthService {
             );
         }
 
-
-        // Generate JWT
-
         String token =
                 jwtUtil.generateToken(
                         user.getEmail()
                 );
-
-
-        // Return login response
 
         return new LoginResponse(
                 token,

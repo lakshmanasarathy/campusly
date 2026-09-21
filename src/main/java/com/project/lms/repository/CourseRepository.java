@@ -11,4 +11,5 @@ public interface CourseRepository
 
     List<Course> findByMentorId(Long mentorId);
 
+    List<Course> findByStatus(String status);
 }
