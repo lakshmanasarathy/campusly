@@ -1,59 +1,93 @@
-const API_URL = "/api";
+function displayCourses(courses) {
 
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const token =
-        localStorage.getItem("token");
-
-    const role =
-        localStorage.getItem("role");
-
-    const fullName =
-        localStorage.getItem("fullName");
-
-
-    // Check login
-
-    if (!token) {
-
-        window.location.href =
-            "login.html";
-
-        return;
-    }
-
-
-    // Check mentor role
-
-    if (role !== "MENTOR") {
-
-        alert(
-            "Access denied. Mentor account required."
+    const container =
+        document.getElementById(
+            "coursesContainer"
         );
 
-        window.location.href =
-            "dashboard.html";
+
+    container.innerHTML = "";
+
+
+    if (courses.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-message">
+
+                <h3>
+                    No courses yet
+                </h3>
+
+                <p>
+                    Create your first course.
+                </p>
+
+            </div>
+
+        `;
 
         return;
     }
 
 
-    // Display mentor name
+    courses.forEach(
+        async function (course) {
 
-    document.getElementById(
-        "mentorInfo"
-    ).innerText =
-        "Welcome, " +
-        (fullName || "Mentor");
-
-
-    loadMentorCourses();
-
-});
+            const card =
+                document.createElement(
+                    "div"
+                );
 
 
-async function loadMentorCourses() {
+            card.className =
+                "book-card";
+
+
+            card.innerHTML = `
+
+                <h3>
+                    ${course.title}
+                </h3>
+
+                <p>
+                    ${course.description || ""}
+                </p>
+
+                <p id="count-${course.id}">
+                    Enrolled Students: Loading...
+                </p>
+
+                <button
+                    class="primary-btn"
+                    onclick="viewStudents(${course.id})">
+
+                    View Students
+
+                </button>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteCourse(${course.id})">
+
+                    Delete
+
+                </button>
+
+            `;
+
+
+            container.appendChild(card);
+
+
+            loadEnrollmentCount(
+                course.id
+            );
+        }
+    );
+}
+
+async function loadEnrollmentCount(courseId) {
 
     const token =
         localStorage.getItem("token");
@@ -63,7 +97,10 @@ async function loadMentorCourses() {
 
         const response =
             await fetch(
-                API_URL + "/courses/mentor",
+                API_URL +
+                "/enrollments/course/" +
+                courseId +
+                "/count",
                 {
                     method: "GET",
 
@@ -77,53 +114,30 @@ async function loadMentorCourses() {
 
         if (!response.ok) {
 
-            console.log(
-                "Unable to load mentor courses"
-            );
-
             return;
         }
 
 
-        const courses =
+        const data =
             await response.json();
 
 
-        document.getElementById(
-            "courseCount"
-        ).innerText =
-            courses.length;
+        const countElement =
+            document.getElementById(
+                "count-" + courseId
+            );
+
+
+        if (countElement) {
+
+            countElement.innerText =
+                "Enrolled Students: " +
+                data.count;
+        }
 
 
     } catch (error) {
 
         console.error(error);
-
     }
-
-}
-
-
-function comingSoon(moduleName) {
-
-    alert(
-        moduleName +
-        " module is coming soon!"
-    );
-
-}
-
-
-function logout() {
-
-    localStorage.removeItem("token");
-
-    localStorage.removeItem("fullName");
-
-    localStorage.removeItem("role");
-
-
-    window.location.href =
-        "login.html";
-
 }

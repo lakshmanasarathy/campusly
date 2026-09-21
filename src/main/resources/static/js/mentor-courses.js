@@ -1,43 +1,29 @@
 const API_URL = "/api";
 
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+// ======================================
+// PAGE LOAD
+// ======================================
 
-        const token =
-            localStorage.getItem("token");
+document.addEventListener("DOMContentLoaded", function () {
 
-        const role =
-            localStorage.getItem("role");
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
-
-        if (!token) {
-
-            window.location.href =
-                "login.html";
-
-            return;
-        }
-
-
-        if (role !== "MENTOR") {
-
-            alert(
-                "Access denied."
-            );
-
-            window.location.href =
-                "dashboard.html";
-
-            return;
-        }
-
-
-        loadCourses();
-
+    if (!token) {
+        window.location.href = "login.html";
+        return;
     }
-);
+
+    if (role !== "MENTOR") {
+        alert("Access denied. Mentor account required.");
+        window.location.href = "dashboard.html";
+        return;
+    }
+
+    loadCourses();
+
+});
 
 
 // ======================================
@@ -46,49 +32,33 @@ document.addEventListener(
 
 async function loadCourses() {
 
-    const token =
-        localStorage.getItem("token");
-
+    const token = localStorage.getItem("token");
 
     try {
 
-        const response =
-            await fetch(
-                API_URL + "/courses/mentor",
-                {
-                    method: "GET",
-
-                    headers: {
-                        "Authorization":
-                            "Bearer " + token
-                    }
+        const response = await fetch(
+            API_URL + "/courses/mentor",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
                 }
-            );
-
+            }
+        );
 
         if (!response.ok) {
-
-            throw new Error(
-                "Failed to load courses"
-            );
-
+            throw new Error("Failed to load courses");
         }
 
-
-        const courses =
-            await response.json();
-
+        const courses = await response.json();
 
         displayCourses(courses);
-
 
     } catch (error) {
 
         console.error(error);
 
-        document.getElementById(
-            "coursesContainer"
-        ).innerHTML =
+        document.getElementById("coursesContainer").innerHTML =
             "<p>Unable to load courses.</p>";
 
     }
@@ -103,75 +73,72 @@ async function loadCourses() {
 function displayCourses(courses) {
 
     const container =
-        document.getElementById(
-            "coursesContainer"
-        );
-
+        document.getElementById("coursesContainer");
 
     container.innerHTML = "";
-
 
     if (courses.length === 0) {
 
         container.innerHTML = `
-
             <div class="empty-message">
 
-                <h3>
-                    No courses yet
-                </h3>
+                <h3>No courses yet</h3>
 
                 <p>
                     Create your first course.
                 </p>
 
             </div>
-
         `;
 
         return;
-
     }
 
 
-    courses.forEach(
-        function (course) {
+    courses.forEach(function (course) {
 
-            const card =
-                document.createElement(
-                    "div"
-                );
+        const card =
+            document.createElement("div");
 
+        card.className = "book-card";
 
-            card.className =
-                "book-card";
+        card.innerHTML = `
 
+            <h3>
+                ${course.title}
+            </h3>
 
-            card.innerHTML = `
+            <p>
+                ${course.description || ""}
+            </p>
 
-                <h3>
-                    ${course.title}
-                </h3>
+            <p id="count-${course.id}">
+                Enrolled Students: Loading...
+            </p>
 
-                <p>
-                    ${course.description || ""}
-                </p>
+            <button
+                class="primary-btn"
+                onclick="viewStudents(${course.id})">
 
-                <button
-                    class="delete-btn"
-                    onclick="deleteCourse(${course.id})">
+                View Students
 
-                    Delete
+            </button>
 
-                </button>
+            <button
+                class="delete-btn"
+                onclick="deleteCourse(${course.id})">
 
-            `;
+                Delete
 
+            </button>
 
-            container.appendChild(card);
+        `;
 
-        }
-    );
+        container.appendChild(card);
+
+        loadEnrollmentCount(course.id);
+
+    });
 
 }
 
@@ -209,22 +176,15 @@ function closeCourseModal() {
 async function createCourse() {
 
     const title =
-        document.getElementById(
-            "title"
-        ).value.trim();
-
+        document.getElementById("title").value.trim();
 
     const description =
-        document.getElementById(
-            "description"
-        ).value.trim();
+        document.getElementById("description").value.trim();
 
 
     if (!title) {
 
-        alert(
-            "Please enter course title."
-        );
+        alert("Please enter course title.");
 
         return;
 
@@ -237,33 +197,22 @@ async function createCourse() {
 
     try {
 
-        const response =
-            await fetch(
-                API_URL + "/courses",
-                {
-                    method: "POST",
+        const response = await fetch(
+            API_URL + "/courses",
+            {
+                method: "POST",
 
-                    headers: {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
 
-                        "Content-Type":
-                            "application/json",
-
-                        "Authorization":
-                            "Bearer " + token
-
-                    },
-
-                    body: JSON.stringify({
-
-                        title: title,
-
-                        description:
-                            description
-
-                    })
-
-                }
-            );
+                body: JSON.stringify({
+                    title: title,
+                    description: description
+                })
+            }
+        );
 
 
         if (!response.ok) {
@@ -281,22 +230,15 @@ async function createCourse() {
         }
 
 
-        alert(
-            "Course created successfully!"
-        );
+        alert("Course created successfully!");
 
 
         closeCourseModal();
 
 
-        document.getElementById(
-            "title"
-        ).value = "";
+        document.getElementById("title").value = "";
 
-
-        document.getElementById(
-            "description"
-        ).value = "";
+        document.getElementById("description").value = "";
 
 
         loadCourses();
@@ -306,9 +248,7 @@ async function createCourse() {
 
         console.error(error);
 
-        alert(
-            "Something went wrong."
-        );
+        alert("Something went wrong.");
 
     }
 
@@ -328,9 +268,7 @@ async function deleteCourse(id) {
 
 
     if (!confirmDelete) {
-
         return;
-
     }
 
 
@@ -340,32 +278,26 @@ async function deleteCourse(id) {
 
     try {
 
-        const response =
-            await fetch(
-                API_URL + "/courses/" + id,
-                {
-                    method: "DELETE",
+        const response = await fetch(
+            API_URL + "/courses/" + id,
+            {
+                method: "DELETE",
 
-                    headers: {
-                        "Authorization":
-                            "Bearer " + token
-                    }
+                headers: {
+                    "Authorization": "Bearer " + token
                 }
-            );
+            }
+        );
 
 
         if (!response.ok) {
 
-            throw new Error(
-                "Delete failed"
-            );
+            throw new Error("Delete failed");
 
         }
 
 
-        alert(
-            "Course deleted successfully."
-        );
+        alert("Course deleted successfully.");
 
 
         loadCourses();
@@ -375,14 +307,158 @@ async function deleteCourse(id) {
 
         console.error(error);
 
-        alert(
-            "Unable to delete course."
-        );
+        alert("Unable to delete course.");
 
     }
 
 }
 
+
+// ======================================
+// LOAD ENROLLMENT COUNT
+// ======================================
+
+async function loadEnrollmentCount(courseId) {
+
+    const token =
+        localStorage.getItem("token");
+
+
+    try {
+
+        const response = await fetch(
+            API_URL +
+            "/enrollments/course/" +
+            courseId +
+            "/count",
+            {
+                method: "GET",
+
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }
+        );
+
+
+        if (!response.ok) {
+            return;
+        }
+
+
+        const data =
+            await response.json();
+
+
+        const countElement =
+            document.getElementById(
+                "count-" + courseId
+            );
+
+
+        if (countElement) {
+
+            countElement.innerText =
+                "Enrolled Students: " +
+                data.count;
+
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+// ======================================
+// VIEW ENROLLED STUDENTS
+// ======================================
+
+async function viewStudents(courseId) {
+
+    const token =
+        localStorage.getItem("token");
+
+
+    try {
+
+        const response = await fetch(
+            API_URL +
+            "/enrollments/course/" +
+            courseId,
+            {
+                method: "GET",
+
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }
+        );
+
+
+        if (!response.ok) {
+
+            const message =
+                await response.text();
+
+            alert(message);
+
+            return;
+
+        }
+
+
+        const students =
+            await response.json();
+
+
+        if (students.length === 0) {
+
+            alert(
+                "No students enrolled in this course yet."
+            );
+
+            return;
+
+        }
+
+
+        let message =
+            "Enrolled Students:\n\n";
+
+
+        students.forEach(
+            function (student, index) {
+
+                message +=
+                    (index + 1) +
+                    ". " +
+                    student.fullName +
+                    "\n" +
+                    "   " +
+                    student.email +
+                    "\n\n";
+
+            }
+        );
+
+
+        alert(message);
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to load students.");
+
+    }
+
+}
 
 // ======================================
 // LOGOUT
@@ -396,8 +472,7 @@ function logout() {
 
     localStorage.removeItem("role");
 
-
-    window.location.href =
-        "login.html";
+    window.location.href = "login.html";
 
 }
+<script src="js/mentor-courses.js"></script>	

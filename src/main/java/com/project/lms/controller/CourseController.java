@@ -1,9 +1,12 @@
 package com.project.lms.controller;
 
 import com.project.lms.entity.Course;
+import com.project.lms.entity.User;
 import com.project.lms.repository.CourseRepository;
+import com.project.lms.repository.UserRepository;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,25 +17,14 @@ import java.util.List;
 public class CourseController {
 
     private final CourseRepository courseRepository;
+    private final UserRepository userRepository;
 
     public CourseController(
-            CourseRepository courseRepository) {
+            CourseRepository courseRepository,
+            UserRepository userRepository) {
 
         this.courseRepository = courseRepository;
-    }
-
-
-    // ======================================
-    // GET ALL ACTIVE COURSES - STUDENT
-    // ======================================
-
-    @GetMapping
-    public ResponseEntity<List<Course>> getAvailableCourses() {
-
-        List<Course> courses =
-                courseRepository.findByStatus("ACTIVE");
-
-        return ResponseEntity.ok(courses);
+        this.userRepository = userRepository;
     }
 
 
@@ -41,21 +33,42 @@ public class CourseController {
     // ======================================
 
     @GetMapping("/mentor")
-    public ResponseEntity<List<Course>> getMentorCourses() {
+    public ResponseEntity<?> getMentorCourses(
+            Authentication authentication) {
 
-        /*
-         * Temporary mentor ID.
-         *
-         * We will replace this with
-         * the logged-in mentor ID from JWT.
-         */
+        try {
 
-        Long mentorId = 1L;
+            String email = authentication.getName();
 
-        List<Course> courses =
-                courseRepository.findByMentorId(mentorId);
+            User mentor = userRepository.findByEmail(email)
+                    .orElseThrow(() ->
+                            new RuntimeException("Mentor not found"));
 
-        return ResponseEntity.ok(courses);
+            List<Course> courses =
+                    courseRepository.findByMentorId(mentor.getId());
+
+            return ResponseEntity.ok(courses);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
+
+    // ======================================
+    // GET ACTIVE COURSES - STUDENT
+    // ======================================
+
+    @GetMapping
+    public ResponseEntity<List<Course>> getAvailableCourses() {
+
+        return ResponseEntity.ok(
+                courseRepository.findByStatus("ACTIVE")
+        );
     }
 
 
@@ -64,24 +77,34 @@ public class CourseController {
     // ======================================
 
     @PostMapping
-    public ResponseEntity<Course> createCourse(
-            @RequestBody Course course) {
+    public ResponseEntity<?> createCourse(
+            @RequestBody Course course,
+            Authentication authentication) {
 
-        /*
-         * Temporary mentor ID.
-         *
-         * Later this will come from
-         * the authenticated JWT user.
-         */
+        try {
 
-        course.setMentorId(1L);
+            String email = authentication.getName();
 
-        course.setStatus("ACTIVE");
+            User mentor = userRepository.findByEmail(email)
+                    .orElseThrow(() ->
+                            new RuntimeException("Mentor not found"));
 
-        Course savedCourse =
-                courseRepository.save(course);
+            course.setMentorId(mentor.getId());
 
-        return ResponseEntity.ok(savedCourse);
+            course.setStatus("ACTIVE");
+
+            Course savedCourse =
+                    courseRepository.save(course);
+
+            return ResponseEntity.ok(savedCourse);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        }
     }
 
 
@@ -91,19 +114,39 @@ public class CourseController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCourse(
-            @PathVariable Long id) {
+            @PathVariable Long id,
+            Authentication authentication) {
 
-        if (!courseRepository.existsById(id)) {
+        try {
 
-            return ResponseEntity
-                    .notFound()
-                    .build();
+            String email = authentication.getName();
+
+            User mentor = userRepository.findByEmail(email)
+                    .orElseThrow(() ->
+                            new RuntimeException("Mentor not found"));
+
+            Course course =
+                    courseRepository.findById(id)
+                            .orElseThrow(() ->
+                                    new RuntimeException("Course not found"));
+
+            if (!mentor.getId().equals(course.getMentorId())) {
+
+                return ResponseEntity.status(403)
+                        .body("You are not the mentor of this course");
+            }
+
+            courseRepository.deleteById(id);
+
+            return ResponseEntity.ok(
+                    "Course deleted successfully");
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
         }
-
-        courseRepository.deleteById(id);
-
-        return ResponseEntity.ok(
-                "Course deleted successfully"
-        );
     }
 }

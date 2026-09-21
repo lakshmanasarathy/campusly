@@ -8,6 +8,10 @@ document.addEventListener(
         const token =
             localStorage.getItem("token");
 
+        const role =
+            localStorage.getItem("role");
+
+
         if (!token) {
 
             alert("Please login first.");
@@ -17,6 +21,20 @@ document.addEventListener(
 
             return;
         }
+
+
+        if (role !== "STUDENT") {
+
+            alert(
+                "Student account required."
+            );
+
+            window.location.href =
+                "mentor-dashboard.html";
+
+            return;
+        }
+
 
         loadCourses();
     }
@@ -32,10 +50,16 @@ async function loadCourses() {
     const token =
         localStorage.getItem("token");
 
+
     const container =
         document.getElementById(
             "courseContainer"
         );
+
+
+    container.innerHTML =
+        "<p>Loading courses...</p>";
+
 
     try {
 
@@ -89,6 +113,7 @@ function displayCourses(courses) {
             "courseContainer"
         );
 
+
     container.innerHTML = "";
 
 
@@ -122,6 +147,7 @@ function displayCourses(courses) {
                 document.createElement(
                     "div"
                 );
+
 
             card.className =
                 "course-card";
@@ -157,7 +183,6 @@ function displayCourses(courses) {
 
 
             container.appendChild(card);
-
         }
     );
 }
@@ -167,10 +192,11 @@ function displayCourses(courses) {
 // ENROLL
 // ======================================
 
-function enroll(courseId) {
+async function enroll(courseId) {
 
     const token =
         localStorage.getItem("token");
+
 
     if (!token) {
 
@@ -183,9 +209,47 @@ function enroll(courseId) {
     }
 
 
-    alert(
-        "Enrollment functionality will be added next."
-    );
+    try {
+
+        const response =
+            await fetch(
+                API_URL +
+                "/enrollments/" +
+                courseId,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token
+                    }
+                }
+            );
+
+
+        const message =
+            await response.text();
+
+
+        if (!response.ok) {
+
+            alert(message);
+
+            return;
+        }
+
+
+        alert(message);
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to enroll in course."
+        );
+    }
 }
 
 
