@@ -23,11 +23,6 @@ public class EventController {
         this.eventService = eventService;
     }
 
-
-    // =========================
-    // GET ALL EVENTS
-    // =========================
-
     @GetMapping
     public ResponseEntity<List<Event>> getAllEvents() {
 
@@ -36,10 +31,6 @@ public class EventController {
         );
     }
 
-
-    // =========================
-    // CREATE EVENT
-    // =========================
 
     @PostMapping
     public ResponseEntity<?> createEvent(
@@ -71,11 +62,6 @@ public class EventController {
         }
     }
 
-
-    // =========================
-    // GET EVENT BY ID
-    // =========================
-
     @GetMapping("/{id}")
     public ResponseEntity<?> getEvent(
             @PathVariable Long id) {
@@ -93,11 +79,6 @@ public class EventController {
                     .build();
         }
     }
-
-
-    // =========================
-    // DELETE EVENT
-    // =========================
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEvent(

@@ -52,9 +52,6 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
 
-                // =========================
-                // FRONTEND PAGES
-                // =========================
                 .requestMatchers(
                     "/",
                     "/index.html",
@@ -71,45 +68,27 @@ public class SecurityConfig {
                     "/favicon.ico"
                 ).permitAll()
 
-                // =========================
-                // CSS / JS / IMAGES
-                // =========================
                 .requestMatchers(
                     "/css/**",
                     "/js/**",
                     "/images/**"
                 ).permitAll()
 
-                // =========================
-                // AUTH APIs
-                // =========================
                 .requestMatchers(
                     "/api/auth/**"
                 ).permitAll()
 
-                // =========================
-                // PUBLIC APIs
-                // =========================
                 .requestMatchers(
                     "/api/public/**"
                 ).permitAll()
 
-                // =========================
-                // STUDENT APIs
-                // =========================
                 .requestMatchers(
                     "/api/student/**"
                 ).hasRole("STUDENT")
 
-                // =========================
-                // OTHER REQUESTS
-                // =========================
                 .anyRequest().authenticated()
             )
 
-            // =========================
-            // JWT FILTER
-            // =========================
             .addFilterBefore(
                 jwtFilter,
                 UsernamePasswordAuthenticationFilter.class

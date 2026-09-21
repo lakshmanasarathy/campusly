@@ -15,13 +15,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Get all users
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    // Get user by ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         try {
@@ -41,7 +39,6 @@ public class UserController {
         }
     }
 
- // Delete user
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {

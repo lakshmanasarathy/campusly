@@ -44,24 +44,15 @@ public class EnrollmentController {
                 courseRepository;
     }
 
-
-    // ==========================================
-    // STUDENT - ENROLL IN COURSE
-    // ==========================================
-
     @PostMapping("/{courseId}")
     public ResponseEntity<?> enroll(
             @PathVariable Long courseId,
             Authentication authentication) {
 
         try {
-
-            // Get logged-in student's email
             String email =
                     authentication.getName();
 
-
-            // Find student
             User student =
                     userRepository
                             .findByEmail(email)
@@ -70,8 +61,6 @@ public class EnrollmentController {
                                             "Student not found"
                                     ));
 
-
-            // Check course
             Course course =
                     courseRepository
                             .findById(courseId)
@@ -80,8 +69,6 @@ public class EnrollmentController {
                                             "Course not found"
                                     ));
 
-
-            // Check course status
             if (!"ACTIVE".equals(course.getStatus())) {
 
                 return ResponseEntity
@@ -91,8 +78,6 @@ public class EnrollmentController {
                         );
             }
 
-
-            // Check duplicate enrollment
             boolean alreadyEnrolled =
                     enrollmentRepository
                             .existsByCourseIdAndStudentId(
@@ -111,7 +96,6 @@ public class EnrollmentController {
             }
 
 
-            // Create enrollment
             Enrollment enrollment =
                     new Enrollment();
 
@@ -145,11 +129,6 @@ public class EnrollmentController {
                     .body(e.getMessage());
         }
     }
-
-
-    // ==========================================
-    // STUDENT - MY ENROLLED COURSES
-    // ==========================================
 
     @GetMapping("/my-courses")
     public ResponseEntity<?> getMyCourses(
@@ -204,11 +183,6 @@ public class EnrollmentController {
         }
     }
 
-
-    // ==========================================
-    // MENTOR - VIEW ENROLLED STUDENTS
-    // ==========================================
-
     @GetMapping("/course/{courseId}")
     public ResponseEntity<?> getEnrolledStudents(
             @PathVariable Long courseId,
@@ -237,8 +211,6 @@ public class EnrollmentController {
                                             "Course not found"
                                     ));
 
-
-            // Make sure this course belongs to this mentor
             if (!mentor.getId().equals(
                     course.getMentorId())) {
 
@@ -312,11 +284,6 @@ public class EnrollmentController {
         }
     }
 
-
-    // ==========================================
-    // MENTOR - GET ENROLLMENT COUNT
-    // ==========================================
-
     @GetMapping("/course/{courseId}/count")
     public ResponseEntity<?> getEnrollmentCount(
             @PathVariable Long courseId,
@@ -345,8 +312,6 @@ public class EnrollmentController {
                                             "Course not found"
                                     ));
 
-
-            // Check course ownership
             if (!mentor.getId().equals(
                     course.getMentorId())) {
 

@@ -27,11 +27,6 @@ public class CourseController {
         this.userRepository = userRepository;
     }
 
-
-    // ======================================
-    // GET MENTOR COURSES
-    // ======================================
-
     @GetMapping("/mentor")
     public ResponseEntity<?> getMentorCourses(
             Authentication authentication) {
@@ -58,11 +53,6 @@ public class CourseController {
         }
     }
 
-
-    // ======================================
-    // GET ACTIVE COURSES - STUDENT
-    // ======================================
-
     @GetMapping
     public ResponseEntity<List<Course>> getAvailableCourses() {
 
@@ -70,11 +60,6 @@ public class CourseController {
                 courseRepository.findByStatus("ACTIVE")
         );
     }
-
-
-    // ======================================
-    // CREATE COURSE
-    // ======================================
 
     @PostMapping
     public ResponseEntity<?> createCourse(
@@ -106,11 +91,6 @@ public class CourseController {
                     .body(e.getMessage());
         }
     }
-
-
-    // ======================================
-    // DELETE COURSE
-    // ======================================
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCourse(

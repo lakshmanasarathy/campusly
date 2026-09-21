@@ -19,17 +19,11 @@ public class BookController {
         this.bookRepository = bookRepository;
     }
 
-
-    // Get all available books
-
     @GetMapping
     public List<Book> getAvailableBooks() {
 
         return bookRepository.findByStatus("AVAILABLE");
     }
-
-
-    // Get book by ID
 
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBook(@PathVariable Long id) {
@@ -38,10 +32,6 @@ public class BookController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
-
-    // Add a book
-
     @PostMapping
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
 
@@ -51,9 +41,6 @@ public class BookController {
 
         return ResponseEntity.ok(savedBook);
     }
-
-
-    // Delete a book
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable Long id) {

@@ -23,14 +23,12 @@ public class JwtUtil {
     @Value("${jwt.expiration-ms}")
     private long expirationMs;
 
-    // Create signing key
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(
                 secret.getBytes(StandardCharsets.UTF_8)
         );
     }
 
-    // Generate JWT token
     public String generateToken(String username) {
 
         Date now = new Date();
@@ -50,7 +48,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Extract username/email from token
     public String extractUsername(String token) {
 
         Claims claims = Jwts.parserBuilder()
@@ -62,7 +59,7 @@ public class JwtUtil {
         return claims.getSubject();
     }
 
-    // Validate JWT token
+
     public boolean validateToken(String token) {
 
         try {
