@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campusly - OTP Verification</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f3f4f6;
+            padding: 20px;
+        }
+
+        .otp-container {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4f46e5;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        #email {
+            color: #111827;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        .otp-input {
+            width: 100%;
+            padding: 14px;
+            font-size: 24px;
+            letter-spacing: 10px;
+            text-align: center;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            margin-bottom: 18px;
+        }
+
+        .otp-input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #4338ca;
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .resend {
+            margin-top: 20px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .resend button {
+            width: auto;
+            padding: 0;
+            background: transparent;
+            color: #4f46e5;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        .resend button:hover {
+            text-decoration: underline;
+        }
+
+        #message {
+            margin-top: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .success {
+            color: #15803d;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 22px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: #4f46e5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="otp-container">
+
+        <div class="logo">Campusly</div>
+
+        <h2>Verify Your Email</h2>
+
+        <p class="description">
+            We've sent a verification code to
+            <br>
+            <span id="email">your email</span>
+            <br><br>
+            Enter the six-digit OTP to verify your email address.
+        </p>
+
+        <form id="otpForm">
+
+            <input
+                type="text"
+                id="otp"
+                class="otp-input"
+                placeholder="000000"
+                maxlength="6"
+                inputmode="numeric"
+                pattern="[0-9]{6}"
+                autocomplete="one-time-code"
+                aria-label="Six-digit OTP"
+                required
+            >
+
+            <button type="submit" id="verifyButton">
+                Verify OTP
+            </button>
+
+        </form>
+
+        <div id="message" role="status" aria-live="polite"></div>
+
+        <div class="resend">
+            Didn't receive the code?
+            <button type="button" id="resendButton">
+                Resend OTP
+            </button>
+        </div>
+
+        <a href="login.html" class="back-link">
+            Back to Login
+        </a>
+
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:8081/api";
+
+        const email = sessionStorage.getItem("otpEmail");
+        const action = sessionStorage.getItem("otpAction");
+
+        const emailElement = document.getElementById("email");
+        const otpInput = document.getElementById("otp");
+        const otpForm = document.getElementById("otpForm");
+        const verifyButton = document.getElementById("verifyButton");
+        const resendButton = document.getElementById("resendButton");
+        const message = document.getElementById("message");
+
+        emailElement.textContent = email || "Email not found";
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = type;
+        }
+
+        // Verify the OTP entered by the user.
+        otpForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const otp = otpInput.value.trim();
+
+            if (!email) {
+                showMessage(
+                    "Email is missing. Please start again.",
+                    "error"
+                );
+                return;
+            }
+
+            if (!/^\d{6}$/.test(otp)) {
+                showMessage(
+                    "Please enter a valid six-digit OTP.",
+                    "error"
+                );
+                return;
+            }
+
+            verifyButton.disabled = true;
+            verifyButton.textContent = "Verifying...";
+
+            try {
+                const response = await fetch(
+                    `${API_URL}/otp/verify`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            otp: otp
+                        })
+                    }
+                );
+
+                const result = await response.json().catch(() => null);
+
+                if (!response.ok) {
+                    throw new Error(
+                        result?.message ||
+                        result?.error ||
+                        "Invalid or expired OTP."
+                    );
+                }
+
+                showMessage(
+                    "OTP verified successfully!",
+                    "success"
+                );
+
+                /*
+                 * IMPORTANT:
+                 * Successful OTP verification alone does not
+                 * complete registration or create a login session.
+                 *
+                 * Connect the appropriate backend operation here.
+                 */
+
+                if (action === "register") {
+                    showMessage(
+                        "Email verified. Continue with registration.",
+                        "success"
+                    );
+
+                    // Temporary navigation.
+                    // Connect registration completion on the backend
+                    // before using this as the final registration flow.
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 1500);
+
+                } else if (action === "login") {
+                    showMessage(
+                        "OTP verified. Complete login authentication.",
+                        "success"
+                    );
+
+                    /*
+                     * Do not navigate directly to a protected dashboard
+                     * until the backend confirms login and issues a JWT.
+                     */
+                } else {
+                    showMessage(
+                        "OTP verified, but the verification flow is missing.",
+                        "error"
+                    );
+                }
+
+            } catch (error) {
+                showMessage(
+                    error.message || "Unable to verify OTP.",
+                    "error"
+                );
+            } finally {
+                verifyButton.disabled = false;
+                verifyButton.textContent = "Verify OTP";
+            }
+        });
+
+        // Request another OTP.
+        resendButton.addEventListener("click", async function () {
+
+            if (!email) {
+                showMessage(
+                    "Email is missing. Please start again.",
+                    "error"
+                );
+                return;
+            }
+
+            resendButton.disabled = true;
+            resendButton.textContent = "Sending...";
+
+            try {
+                const response = await fetch(
+                    `${API_URL}/otp/send`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            email: email
+                        })
+                    }
+                );
+
+                const result = await response.json().catch(() => null);
+
+                if (!response.ok) {
+                    throw new Error(
+                        result?.message ||
+                        result?.error ||
+                        "Unable to resend OTP."
+                    );
+                }
+
+                showMessage(
+                    "A new OTP has been requested. Check your email.",
+                    "success"
+                );
+
+                otpInput.value = "";
+
+            } catch (error) {
+                showMessage(
+                    error.message || "Unable to resend OTP.",
+                    "error"
+                );
+            } finally {
+                resendButton.disabled = false;
+                resendButton.textContent = "Resend OTP";
+            }
+        });
+        
+    </script>
+
+</body>
+</html>

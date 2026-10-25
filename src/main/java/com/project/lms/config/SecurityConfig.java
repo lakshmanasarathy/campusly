@@ -65,6 +65,7 @@ public class SecurityConfig {
                     "/mentor-courses.html",
                     "/mentor-dashboard.html",
                     "/mentor-students.html",
+                    "/otp-verification.html",
                     "/favicon.ico"
                 ).permitAll()
 
@@ -81,7 +82,11 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/api/public/**"
                 ).permitAll()
-
+                
+                .requestMatchers(
+                        "/api/otp/**"
+                    ).permitAll()
+                
                 .requestMatchers(
                     "/api/student/**"
                 ).hasRole("STUDENT")
